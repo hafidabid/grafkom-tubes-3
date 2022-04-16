@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    margin-top: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+}
+
+.interactive-button{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 60vh;
+    width: 20%;
+    padding-left: 2em;
+}
+
+.help-button{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.help-modal{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: aquamarine;
+    width: 70vw;
+    height: 70vh;
+}
+
+#help-close-btn{
+    position: absolute;
+    top: 12px;
+    left: 12px;
+}
+
+.help-description{
+    padding-top: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    overflow: auto;
+    height: inherit;
+    width: inherit;
+}
+
+.help-description label {
+    font-size: large;
+    font-weight: 700;
+}
+
+.help-description p {
+    font-size: large;
+    padding-bottom: 25px;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+button{
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+#inputFile{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#modeselection{
+    margin-right: auto;
+}

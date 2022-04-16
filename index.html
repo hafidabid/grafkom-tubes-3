@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL</title>
+    <link rel="stylesheet" href="./style.css" type="text/css">
+    <script src="const.js" defer></script>
+    <script src="object.js" defer></script>
+    <script src="inversemat.js" defer></script>
+    <script src="matrix.js" defer></script>
+    <script src="engine.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <main>
+        <div class="interactive-button">
+            <div class="translation">
+                <p>Translasi objek</p>
+                <div class="slider">
+                    <label for="x-translation">x</label>
+                    <input type="range" min="-750" max="750" step="0.001" value="45" name="x-translation" id="x-translation">
+                    <output>90</output>
+                </div>
+                <div class="slider">
+                    <label for="y-translation">y</label>
+                    <input type="range" min=-750 max=750 step=0.001 value=150 name="y-translation" id="y-translation">
+                    <output>150</output>
+                </div>
+                <div class="slider">
+                    <label for="z-translation">z</label>
+                    <input type="range" min=-1000 max=750 step=0.001 value=0 name="z-translation" id="z-translation">
+                    <output>0</output>
+                </div>
+            </div>
+            <div class="rotation">
+                <p>Rotasi objek</p>
+                <div class="slider">
+                    <label for="x-rotation">x-axis</label>
+                    <input type="range" min=0 max=360 value=70 name="x-rotation" id="x-rotation">
+                    <output>40</output>
+                </div>
+                <div class="slider">
+                    <label for="y-rotation">y-axis</label>
+                    <input type="range" min=0 max=360 value=10 name="y-rotation" id="y-rotation">
+                    <output>20</output>
+                </div>
+                <div class="slider">
+                    <label for="z-rotation">z-axis</label>
+                    <input type="range" min=0 max=360 value=0 name="z-rotation" id="z-rotation">
+                    <output>325</output>
+                </div>
+            </div>
+            <div class="scaling">
+                <p>Scale</p>
+                <div class="slider">
+                    <label for="x-scale">scale-x</label>
+                    <input type="range" min=-5 max=5 step=0.01 value=1 name="x-scale" id="x-scale">
+                    <output>1</output>
+                </div>
+                <div class="slider">
+                    <label for="y-scale">scale-y</label>
+                    <input type="range" min=-5 max=5 step=0.01 value=1 name="y-scale" id="y-scale">
+                    <output>1</output>
+                </div>
+                <div class="slider">
+                    <label for="z-scale">scale-z</label>
+                    <input type="range" min=-5 max=5 step=0.01 value=1 name="z-scale" id="z-scale">
+                    <output>1</output>
+                </div>
+            </div>
+
+            <div>
+                <p>Mode</p>
+            <select id="modeselection">
+                <option value="orthograpic">orthograpic</option>
+                <option value="prespective">prespective</option>
+                <option value="oblique">oblique</option>
+            </select>
+            </div>
+            <div class="prespective-slider">
+                <p>prespective</p>
+                <div class="slider">
+                    <label for="fov-scale">field of view</label>
+                    <input type="range" min=1 max=179 step=0.01 value=60 name="fov-scale" id="fov-scale">
+                    <output>60</output>
+                </div>
+            </div>
+            
+            <div class="oblique-slider">
+                <p>oblique</p>
+                <div class="slider">
+                    <label for="oblique-scale">cabinet angle</label>
+                    <input type="range" min=0 max=359 step=0.01 value=60 name="oblique-scale" id="oblique-scale">
+                    <output>63.4</output>
+                </div>
+            </div>
+
+            <input type="file" value="inputFile" id="inputFile" name="inputFile">
+            <button onclick="readfile()" >Proceed File</button>
+            <button onclick="resetButton()">reset to default</button>
+        </div>
+        <canvas id="canvas" width="750" height="750"></canvas>
+        <div class="interactive-button">
+            <div class="translation">
+                <p>Kamera</p>
+                <div class="slider">
+                    <label for="cam-rotation">Camera rotation</label>
+                    <input type="range" min="-360" max="360" step="0.1" value="0" name="cam-rotation" id="cam-rotation">
+                    <output>0</output>
+                </div>
+                <div class="slider">
+                    <label for="cam-radius">Camera radius</label>
+                    <input type="range" min=1 max=300 step=0.1 value=200 name="cam-radius" id="cam-radius">
+                    <output>200</output>
+                </div>
+                <div class="slider">
+                    <label for="isshader">Not using shader?</label>
+                    <input type="checkbox" id="isshader" name="isshader" value="y">
+                </div>
+            </div>
+            <div class="help-button">
+                <span> Bantuan </span>
+                <button id="help-btn"> Bantuan </button>
+            </div>
+        </div>
+        <div class="help-modal">
+            <button id="help-close-btn"> X </button>
+            <div class="help-description">
+                <label> Translasi objek </label>
+                <p>
+                    3 buah slider pada ujung kiri atas layar di bawah label "Translasi objek" berfungsi untuk menggerakkan objek pada canvas, ubah x untuk pergerakan horizontal, y untuk pergerakan vertikal, dan z untuk pergerakan maju mundur. Perubahan nilai z hanya berlaku pada mode "perspective".
+                </p>
+                <label> Rotasi objek </label>
+                <p>
+                    3 buah slider pada ujung kiri tengah layar di bawah label "Rotasi objek" berfungsi untuk memutar objek pada canvas, ubah x untuk memutar pada sumbu horizontal, y untuk putaran sumbu vertikal, dan z untuk putaran pada sumbu yang menuju kita.
+                </p>
+                <label> Scaling </label>
+                <p>
+                    3 buah slider pada kiri bawah layar di bawah label "Scale" berfungsi untuk mengubah ukuran objek pada canvas, ubah x untuk mengubah ukuran searah sumbu horizontal pada sudut putaran 0, y untuk mengubah ukuran searah sumbu vertikal pada sudut putaran 0, dan z untuk mengubah ukuran searah sumbu yang menuju kita pada sudut putaran 0.
+                </p>
+                <label> Mengubah mode </label>
+                <p>
+                    Terdapat selection bar dengan tiga pilihan yaitu "orthograpic", "perspective", dan "oblique" di bawah label "Mode" di ujung kiri bawah layar. Tiap-tiap mode dapat dipilih, dengan mode perspective dan oblique memiliki slider tambahan pada modenya.
+                </p>
+                <label> Membuka file objek</label>
+                <p>
+                    Objek yang tampil pada layar dapat diubah dengan memilih salah satu dari tiga file objek bawaan dengan menekan tombol "choose file" di kiri bawah.
+                </p>
+                <label> Mengubah ke pengaturan awal </label>
+                <p>
+                    Pada tombol "reset to default" di kiri bawah, perubahan yang sudah dilakukan di pengaturan dapat diubah ke pengaturan awal.
+                </p>
+                <label> Pengaturan kamera </label>
+                <p>
+                    Pengaturan kamera dapat dilakukan melalui dua slider di kanan atas di bawah label Kamera. Terdapat dua pengaturan, yakni "Camera rotation" dan "Camera radius", dimana "Camera radius" hanya berefek pada mode "perspective". 
+                </p>
+                <label> Pengaturan shading </label>
+                <p>
+                    Pengaturan shading dapat dilakukan melalui checkbox di bawah pengaturan kamera, isi checkbox untuk menghilangkan fungsi shader pada canvas.
+                </p>
+                <label> Menu bantuan </label>
+                <p>
+                    Tutup menu bantuan dengan menekan tombol "X" di kiri atas modal box ini.  
+                </p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
